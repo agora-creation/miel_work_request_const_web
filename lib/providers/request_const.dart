@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:miel_work_request_const_web/models/user.dart';
 import 'package:miel_work_request_const_web/services/fm.dart';
 import 'package:miel_work_request_const_web/services/request_const.dart';
 import 'package:miel_work_request_const_web/services/user.dart';
@@ -18,10 +17,10 @@ class RequestConstProvider with ChangeNotifier {
     required String remarks,
   }) async {
     String? error;
-    if (shopName == '') return '会社名は必須入力です';
-    if (shopUserName == '') return '担当者名は必須入力です';
-    if (shopUserEmail == '') return '担当者メールアドレスは必須入力です';
-    if (shopUserTel == '') return '担当者電話番号は必須入力です';
+    if (shopName == '') return '店舗名は必須入力です';
+    if (shopUserName == '') return '店舗責任者名は必須入力です';
+    if (shopUserEmail == '') return '店舗責任者メールアドレスは必須入力です';
+    if (shopUserTel == '') return '店舗責任者電話番号は必須入力です';
     try {
       await FirebaseAuth.instance.signInAnonymously().then((value) {
         String id = _constService.id();
@@ -39,17 +38,17 @@ class RequestConstProvider with ChangeNotifier {
         });
       });
       //通知
-      List<UserModel> sendUsers = [];
-      sendUsers = await _userService.selectList();
-      if (sendUsers.isNotEmpty) {
-        for (UserModel user in sendUsers) {
-          _fmService.send(
-            token: user.token,
-            title: '社外申請',
-            body: '店舗工事作業の申請がありました',
-          );
-        }
-      }
+      // List<UserModel> sendUsers = [];
+      // sendUsers = await _userService.selectList();
+      // if (sendUsers.isNotEmpty) {
+      //   for (UserModel user in sendUsers) {
+      //     _fmService.send(
+      //       token: user.token,
+      //       title: '社外申請',
+      //       body: '店舗工事作業の申請がありました',
+      //     );
+      //   }
+      // }
     } catch (e) {
       error = '申請に失敗しました';
     }
