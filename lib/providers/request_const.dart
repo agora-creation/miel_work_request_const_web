@@ -10,27 +10,51 @@ class RequestConstProvider with ChangeNotifier {
   final FmService _fmService = FmService();
 
   Future<String?> create({
-    required String shopName,
-    required String shopUserName,
-    required String shopUserEmail,
-    required String shopUserTel,
-    required String remarks,
+    required String companyName,
+    required String companyUserName,
+    required String companyUserEmail,
+    required String companyUserTel,
+    required String constName,
+    required String constUserName,
+    required String constUserTel,
+    required DateTime constStartedAt,
+    required DateTime constEndedAt,
+    required bool constAtPending,
+    required String constContent,
+    required bool noise,
+    required String noiseMeasures,
+    required bool dust,
+    required String dustMeasures,
+    required bool fire,
+    required String fireMeasures,
   }) async {
     String? error;
-    if (shopName == '') return '店舗名は必須入力です';
-    if (shopUserName == '') return '店舗責任者名は必須入力です';
-    if (shopUserEmail == '') return '店舗責任者メールアドレスは必須入力です';
-    if (shopUserTel == '') return '店舗責任者電話番号は必須入力です';
+    if (companyName == '') return '店舗名は必須入力です';
+    if (companyUserName == '') return '店舗責任者名は必須入力です';
+    if (companyUserEmail == '') return '店舗責任者メールアドレスは必須入力です';
+    if (companyUserTel == '') return '店舗責任者電話番号は必須入力です';
     try {
       await FirebaseAuth.instance.signInAnonymously().then((value) {
         String id = _constService.id();
         _constService.create({
           'id': id,
-          'shopName': shopName,
-          'shopUserName': shopUserName,
-          'shopUserEmail': shopUserEmail,
-          'shopUserTel': shopUserTel,
-          'remarks': remarks,
+          'companyName': companyName,
+          'companyUserName': companyUserName,
+          'companyUserEmail': companyUserEmail,
+          'companyUserTel': companyUserTel,
+          'constName': constName,
+          'constUserName': constUserName,
+          'constUserTel': constUserTel,
+          'constStartedAt': constStartedAt,
+          'constEndedAt': constEndedAt,
+          'constAtPending': constAtPending,
+          'constContent': constContent,
+          'noise': noise,
+          'noiseMeasures': noiseMeasures,
+          'dust': dust,
+          'dustMeasures': dustMeasures,
+          'fire': fire,
+          'fireMeasures': fireMeasures,
           'approval': 0,
           'approvedAt': DateTime.now(),
           'approvalUsers': [],

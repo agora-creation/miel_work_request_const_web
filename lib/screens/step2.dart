@@ -13,18 +13,42 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class Step2Screen extends StatefulWidget {
-  final String shopName;
-  final String shopUserName;
-  final String shopUserEmail;
-  final String shopUserTel;
-  final String remarks;
+  final String companyName;
+  final String companyUserName;
+  final String companyUserEmail;
+  final String companyUserTel;
+  final String constName;
+  final String constUserName;
+  final String constUserTel;
+  final DateTime constStartedAt;
+  final DateTime constEndedAt;
+  final bool constAtPending;
+  final String constContent;
+  final bool noise;
+  final String noiseMeasures;
+  final bool dust;
+  final String dustMeasures;
+  final bool fire;
+  final String fireMeasures;
 
   const Step2Screen({
-    required this.shopName,
-    required this.shopUserName,
-    required this.shopUserEmail,
-    required this.shopUserTel,
-    required this.remarks,
+    required this.companyName,
+    required this.companyUserName,
+    required this.companyUserEmail,
+    required this.companyUserTel,
+    required this.constName,
+    required this.constUserName,
+    required this.constUserTel,
+    required this.constStartedAt,
+    required this.constEndedAt,
+    required this.constAtPending,
+    required this.constContent,
+    required this.noise,
+    required this.noiseMeasures,
+    required this.dust,
+    required this.dustMeasures,
+    required this.fire,
+    required this.fireMeasures,
     super.key,
   });
 
@@ -53,49 +77,147 @@ class _Step2ScreenState extends State<Step2Screen> {
               const SizedBox(height: 24),
               ResponsiveBox(
                 children: [
-                  const Text('以下の申込内容で問題ないかご確認ください。'),
+                  const Text('以下の申請内容で問題ないかご確認ください。'),
+                  const SizedBox(height: 16),
+                  const DottedDivider(),
+                  const SizedBox(height: 16),
+                  const Text(
+                    '申請者情報',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'SourceHanSansJP-Bold',
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   FormLabel(
                     '店舗名',
-                    child: FormValue(widget.shopName),
+                    child: FormValue(widget.constName),
                   ),
                   const SizedBox(height: 8),
                   FormLabel(
                     '店舗責任者名',
-                    child: FormValue(widget.shopUserName),
+                    child: FormValue(widget.companyUserName),
                   ),
                   const SizedBox(height: 8),
                   FormLabel(
                     '店舗責任者メールアドレス',
-                    child: FormValue(widget.shopUserEmail),
+                    child: FormValue(widget.companyUserEmail),
                   ),
                   const SizedBox(height: 8),
                   FormLabel(
                     '店舗責任者電話番号',
-                    child: FormValue(widget.shopUserTel),
+                    child: FormValue(widget.companyUserTel),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
                   const DottedDivider(),
                   const SizedBox(height: 16),
-                  FormLabel(
-                    'その他連絡事項',
-                    child: FormValue(widget.remarks),
+                  const Text(
+                    '工事施工情報',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'SourceHanSansJP-Bold',
+                    ),
                   ),
+                  const SizedBox(height: 8),
+                  FormLabel(
+                    '工事施工会社名',
+                    child: FormValue(widget.constName),
+                  ),
+                  const SizedBox(height: 8),
+                  FormLabel(
+                    '工事施工代表者名',
+                    child: FormValue(widget.constUserName),
+                  ),
+                  const SizedBox(height: 8),
+                  FormLabel(
+                    '工事施工代表者電話番号',
+                    child: FormValue(widget.companyUserTel),
+                  ),
+                  const SizedBox(height: 8),
+                  FormLabel(
+                    '施工予定日時',
+                    child: FormValue(
+                      widget.constAtPending
+                          ? '未定'
+                          : '${dateText('yyyy年MM月dd日 HH:mm', widget.constStartedAt)}〜${dateText('yyyy年MM月dd日 HH:mm', widget.constEndedAt)}',
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  FormLabel(
+                    '施工内容',
+                    child: FormValue(widget.constContent),
+                  ),
+                  const SizedBox(height: 8),
+                  FormLabel(
+                    '騒音',
+                    child: FormValue(widget.noise ? '有' : '無'),
+                  ),
+                  widget.noise
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: FormLabel(
+                            '騒音対策',
+                            child: FormValue(widget.noiseMeasures),
+                          ),
+                        )
+                      : Container(),
+                  const SizedBox(height: 8),
+                  FormLabel(
+                    '粉塵',
+                    child: FormValue(widget.dust ? '有' : '無'),
+                  ),
+                  widget.dust
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: FormLabel(
+                            '粉塵対策',
+                            child: FormValue(widget.dustMeasures),
+                          ),
+                        )
+                      : Container(),
+                  const SizedBox(height: 8),
+                  FormLabel(
+                    '火気の使用',
+                    child: FormValue(widget.fire ? '有' : '無'),
+                  ),
+                  widget.fire
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: FormLabel(
+                            '火気対策',
+                            child: FormValue(widget.fireMeasures),
+                          ),
+                        )
+                      : Container(),
                   const SizedBox(height: 16),
                   const DottedDivider(),
                   const SizedBox(height: 32),
                   CustomButton(
                     type: ButtonSizeType.lg,
-                    label: '上記内容で申し込む',
+                    label: '上記内容で申請する',
                     labelColor: kWhiteColor,
                     backgroundColor: kBlueColor,
                     onPressed: () async {
                       String? error = await constProvider.create(
-                        shopName: widget.shopName,
-                        shopUserName: widget.shopUserName,
-                        shopUserEmail: widget.shopUserEmail,
-                        shopUserTel: widget.shopUserTel,
-                        remarks: widget.remarks,
+                        companyName: widget.constName,
+                        companyUserName: widget.companyUserName,
+                        companyUserEmail: widget.companyUserEmail,
+                        companyUserTel: widget.companyUserTel,
+                        constName: widget.constName,
+                        constUserName: widget.constUserName,
+                        constUserTel: widget.constUserTel,
+                        constStartedAt: widget.constStartedAt,
+                        constEndedAt: widget.constEndedAt,
+                        constAtPending: widget.constAtPending,
+                        constContent: widget.constContent,
+                        noise: widget.noise,
+                        noiseMeasures: widget.noiseMeasures,
+                        dust: widget.dust,
+                        dustMeasures: widget.dustMeasures,
+                        fire: widget.fire,
+                        fireMeasures: widget.fireMeasures,
                       );
                       if (error != null) {
                         if (!mounted) return;
