@@ -222,7 +222,7 @@ class _Step1ScreenState extends State<Step1Screen> {
                     child: CustomTextField(
                       controller: constContent,
                       textInputType: TextInputType.multiline,
-                      maxLines: null,
+                      maxLines: 5,
                     ),
                   ),
                   const SizedBox(height: 8),
