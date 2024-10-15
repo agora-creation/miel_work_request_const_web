@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:miel_work_request_const_web/common/custom_date_time_picker.dart';
 import 'package:miel_work_request_const_web/common/functions.dart';
@@ -9,6 +10,7 @@ import 'package:miel_work_request_const_web/widgets/custom_checkbox.dart';
 import 'package:miel_work_request_const_web/widgets/custom_text_field.dart';
 import 'package:miel_work_request_const_web/widgets/datetime_range_form.dart';
 import 'package:miel_work_request_const_web/widgets/dotted_divider.dart';
+import 'package:miel_work_request_const_web/widgets/file_picker_button.dart';
 import 'package:miel_work_request_const_web/widgets/form_label.dart';
 import 'package:miel_work_request_const_web/widgets/responsive_box.dart';
 import 'package:page_transition/page_transition.dart';
@@ -32,6 +34,7 @@ class _Step1ScreenState extends State<Step1Screen> {
   DateTime constStartedAt = DateTime.now();
   DateTime constEndedAt = DateTime.now();
   bool constAtPending = false;
+  PlatformFile? pickedProcessFile;
   TextEditingController constContent = TextEditingController();
   bool noise = false;
   TextEditingController noiseMeasures = TextEditingController();
@@ -218,6 +221,23 @@ class _Step1ScreenState extends State<Step1Screen> {
                   ),
                   const SizedBox(height: 8),
                   FormLabel(
+                    '工程表ファイル',
+                    child: FilePickerButton(
+                      value: pickedProcessFile,
+                      defaultValue: '',
+                      onPressed: () async {
+                        final result = await FilePicker.platform.pickFiles(
+                          type: FileType.any,
+                        );
+                        if (result == null) return;
+                        setState(() {
+                          pickedProcessFile = result.files.first;
+                        });
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  FormLabel(
                     '施工内容',
                     child: CustomTextField(
                       controller: constContent,
@@ -342,6 +362,7 @@ class _Step1ScreenState extends State<Step1Screen> {
                             constStartedAt: constStartedAt,
                             constEndedAt: constEndedAt,
                             constAtPending: constAtPending,
+                            pickedProcessFile: pickedProcessFile,
                             constContent: constContent.text,
                             noise: noise,
                             noiseMeasures: noiseMeasures.text,

@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:miel_work_request_const_web/common/functions.dart';
 import 'package:miel_work_request_const_web/common/style.dart';
@@ -10,6 +11,7 @@ import 'package:miel_work_request_const_web/widgets/form_value.dart';
 import 'package:miel_work_request_const_web/widgets/link_text.dart';
 import 'package:miel_work_request_const_web/widgets/responsive_box.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 
 class Step2Screen extends StatefulWidget {
@@ -23,6 +25,7 @@ class Step2Screen extends StatefulWidget {
   final DateTime constStartedAt;
   final DateTime constEndedAt;
   final bool constAtPending;
+  final PlatformFile? pickedProcessFile;
   final String constContent;
   final bool noise;
   final String noiseMeasures;
@@ -42,6 +45,7 @@ class Step2Screen extends StatefulWidget {
     required this.constStartedAt,
     required this.constEndedAt,
     required this.constAtPending,
+    required this.pickedProcessFile,
     required this.constContent,
     required this.noise,
     required this.noiseMeasures,
@@ -146,6 +150,13 @@ class _Step2ScreenState extends State<Step2Screen> {
                   ),
                   const SizedBox(height: 8),
                   FormLabel(
+                    '工程表ファイル',
+                    child: FormValue(
+                      p.basename(widget.pickedProcessFile?.name ?? ''),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  FormLabel(
                     '施工内容',
                     child: FormValue(widget.constContent),
                   ),
@@ -211,6 +222,7 @@ class _Step2ScreenState extends State<Step2Screen> {
                         constStartedAt: widget.constStartedAt,
                         constEndedAt: widget.constEndedAt,
                         constAtPending: widget.constAtPending,
+                        pickedProcessFile: widget.pickedProcessFile,
                         constContent: widget.constContent,
                         noise: widget.noise,
                         noiseMeasures: widget.noiseMeasures,

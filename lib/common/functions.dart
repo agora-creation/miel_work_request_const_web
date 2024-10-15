@@ -8,6 +8,7 @@ import 'package:miel_work_request_const_web/common/style.dart';
 import 'package:miel_work_request_const_web/widgets/custom_alert_banner.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:universal_html/html.dart' as uhtml;
 
 void showMessage(BuildContext context, String msg, bool success) {
   showAlertBanner(
@@ -174,4 +175,14 @@ DateTime rebuildTime(BuildContext context, DateTime? date, String? time) {
     ret = DateTime.parse('$tmpDate $tmpTime');
   }
   return ret;
+}
+
+void downloadFile({
+  required String url,
+  required String name,
+}) {
+  var anchorElement = uhtml.AnchorElement(href: url);
+  anchorElement.target = 'blank';
+  anchorElement.download = name;
+  anchorElement.click();
 }
