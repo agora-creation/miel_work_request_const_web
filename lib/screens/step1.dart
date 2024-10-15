@@ -177,7 +177,7 @@ class _Step1ScreenState extends State<Step1Screen> {
                   FormLabel(
                     '工事施工代表者電話番号',
                     child: CustomTextField(
-                      controller: companyUserTel,
+                      controller: constUserTel,
                       textInputType: TextInputType.text,
                       maxLines: 1,
                       hintText: '例）090-0000-0000',

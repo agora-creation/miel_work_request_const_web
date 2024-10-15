@@ -137,7 +137,7 @@ class _Step2ScreenState extends State<Step2Screen> {
                   const SizedBox(height: 8),
                   FormLabel(
                     '工事施工代表者電話番号',
-                    child: FormValue(widget.companyUserTel),
+                    child: FormValue(widget.constUserTel),
                   ),
                   const SizedBox(height: 8),
                   FormLabel(
