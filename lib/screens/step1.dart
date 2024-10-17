@@ -5,15 +5,16 @@ import 'package:miel_work_request_const_web/common/functions.dart';
 import 'package:miel_work_request_const_web/common/style.dart';
 import 'package:miel_work_request_const_web/providers/request_const.dart';
 import 'package:miel_work_request_const_web/screens/step2.dart';
+import 'package:miel_work_request_const_web/widgets/attached_file_list.dart';
 import 'package:miel_work_request_const_web/widgets/custom_button.dart';
 import 'package:miel_work_request_const_web/widgets/custom_checkbox.dart';
 import 'package:miel_work_request_const_web/widgets/custom_text_field.dart';
 import 'package:miel_work_request_const_web/widgets/datetime_range_form.dart';
 import 'package:miel_work_request_const_web/widgets/dotted_divider.dart';
-import 'package:miel_work_request_const_web/widgets/file_picker_button.dart';
 import 'package:miel_work_request_const_web/widgets/form_label.dart';
 import 'package:miel_work_request_const_web/widgets/responsive_box.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:path/path.dart' as p;
 import 'package:provider/provider.dart';
 
 class Step1Screen extends StatefulWidget {
@@ -34,7 +35,6 @@ class _Step1ScreenState extends State<Step1Screen> {
   DateTime constStartedAt = DateTime.now();
   DateTime constEndedAt = DateTime.now();
   bool constAtPending = false;
-  PlatformFile? pickedProcessFile;
   TextEditingController constContent = TextEditingController();
   bool noise = false;
   TextEditingController noiseMeasures = TextEditingController();
@@ -42,6 +42,7 @@ class _Step1ScreenState extends State<Step1Screen> {
   TextEditingController dustMeasures = TextEditingController();
   bool fire = false;
   TextEditingController fireMeasures = TextEditingController();
+  List<PlatformFile> pickedAttachedFiles = [];
 
   @override
   void initState() {
@@ -230,28 +231,19 @@ class _Step1ScreenState extends State<Step1Screen> {
                   ),
                   const SizedBox(height: 8),
                   FormLabel(
-                    '工程表ファイル',
-                    child: FilePickerButton(
-                      value: pickedProcessFile,
-                      defaultValue: '',
-                      onPressed: () async {
-                        final result = await FilePicker.platform.pickFiles(
-                          type: FileType.any,
-                        );
-                        if (result == null) return;
-                        setState(() {
-                          pickedProcessFile = result.files.first;
-                        });
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  FormLabel(
                     '施工内容',
                     child: CustomTextField(
                       controller: constContent,
                       textInputType: TextInputType.multiline,
                       maxLines: 5,
+                    ),
+                  ),
+                  const Text(
+                    '※工程表ファイルも、下の添付ファイルから送ってください',
+                    style: TextStyle(
+                      color: kRedColor,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'SourceHanSansJP-Bold',
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -337,6 +329,44 @@ class _Step1ScreenState extends State<Step1Screen> {
                       : Container(),
                   const SizedBox(height: 16),
                   const DottedDivider(),
+                  const SizedBox(height: 16),
+                  FormLabel(
+                    '添付ファイル',
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomButton(
+                          type: ButtonSizeType.sm,
+                          label: 'ファイル選択',
+                          labelColor: kWhiteColor,
+                          backgroundColor: kGreyColor,
+                          onPressed: () async {
+                            final result = await FilePicker.platform.pickFiles(
+                              type: FileType.any,
+                            );
+                            if (result == null) return;
+                            pickedAttachedFiles.addAll(result.files);
+                            setState(() {});
+                          },
+                        ),
+                        const SizedBox(height: 4),
+                        Column(
+                          children: pickedAttachedFiles.map((file) {
+                            return AttachedFileList(
+                              fileName: p.basename(file.name),
+                              onTap: () {
+                                pickedAttachedFiles.remove(file);
+                                setState(() {});
+                              },
+                              isClose: true,
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const DottedDivider(),
                   const SizedBox(height: 32),
                   CustomButton(
                     type: ButtonSizeType.lg,
@@ -371,7 +401,6 @@ class _Step1ScreenState extends State<Step1Screen> {
                             constStartedAt: constStartedAt,
                             constEndedAt: constEndedAt,
                             constAtPending: constAtPending,
-                            pickedProcessFile: pickedProcessFile,
                             constContent: constContent.text,
                             noise: noise,
                             noiseMeasures: noiseMeasures.text,
@@ -379,6 +408,7 @@ class _Step1ScreenState extends State<Step1Screen> {
                             dustMeasures: dustMeasures.text,
                             fire: fire,
                             fireMeasures: fireMeasures.text,
+                            pickedAttachedFiles: pickedAttachedFiles,
                           ),
                         ),
                       );

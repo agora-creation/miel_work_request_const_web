@@ -4,6 +4,7 @@ import 'package:miel_work_request_const_web/common/functions.dart';
 import 'package:miel_work_request_const_web/common/style.dart';
 import 'package:miel_work_request_const_web/providers/request_const.dart';
 import 'package:miel_work_request_const_web/screens/step3.dart';
+import 'package:miel_work_request_const_web/widgets/attached_file_list.dart';
 import 'package:miel_work_request_const_web/widgets/custom_button.dart';
 import 'package:miel_work_request_const_web/widgets/dotted_divider.dart';
 import 'package:miel_work_request_const_web/widgets/form_label.dart';
@@ -25,7 +26,6 @@ class Step2Screen extends StatefulWidget {
   final DateTime constStartedAt;
   final DateTime constEndedAt;
   final bool constAtPending;
-  final PlatformFile? pickedProcessFile;
   final String constContent;
   final bool noise;
   final String noiseMeasures;
@@ -33,6 +33,7 @@ class Step2Screen extends StatefulWidget {
   final String dustMeasures;
   final bool fire;
   final String fireMeasures;
+  final List<PlatformFile> pickedAttachedFiles;
 
   const Step2Screen({
     required this.companyName,
@@ -45,7 +46,6 @@ class Step2Screen extends StatefulWidget {
     required this.constStartedAt,
     required this.constEndedAt,
     required this.constAtPending,
-    required this.pickedProcessFile,
     required this.constContent,
     required this.noise,
     required this.noiseMeasures,
@@ -53,6 +53,7 @@ class Step2Screen extends StatefulWidget {
     required this.dustMeasures,
     required this.fire,
     required this.fireMeasures,
+    required this.pickedAttachedFiles,
     super.key,
   });
 
@@ -150,13 +151,6 @@ class _Step2ScreenState extends State<Step2Screen> {
                   ),
                   const SizedBox(height: 8),
                   FormLabel(
-                    '工程表ファイル',
-                    child: FormValue(
-                      p.basename(widget.pickedProcessFile?.name ?? ''),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  FormLabel(
                     '施工内容',
                     child: FormValue(widget.constContent),
                   ),
@@ -204,6 +198,24 @@ class _Step2ScreenState extends State<Step2Screen> {
                       : Container(),
                   const SizedBox(height: 16),
                   const DottedDivider(),
+                  const SizedBox(height: 16),
+                  FormLabel(
+                    '添付ファイル',
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          children: widget.pickedAttachedFiles.map((file) {
+                            return AttachedFileList(
+                              fileName: p.basename(file.name),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const DottedDivider(),
                   const SizedBox(height: 32),
                   CustomButton(
                     type: ButtonSizeType.lg,
@@ -222,7 +234,6 @@ class _Step2ScreenState extends State<Step2Screen> {
                         constStartedAt: widget.constStartedAt,
                         constEndedAt: widget.constEndedAt,
                         constAtPending: widget.constAtPending,
-                        pickedProcessFile: widget.pickedProcessFile,
                         constContent: widget.constContent,
                         noise: widget.noise,
                         noiseMeasures: widget.noiseMeasures,
@@ -230,6 +241,7 @@ class _Step2ScreenState extends State<Step2Screen> {
                         dustMeasures: widget.dustMeasures,
                         fire: widget.fire,
                         fireMeasures: widget.fireMeasures,
+                        pickedAttachedFiles: widget.pickedAttachedFiles,
                       );
                       if (error != null) {
                         if (!mounted) return;

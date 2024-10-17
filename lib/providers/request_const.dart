@@ -41,7 +41,6 @@ class RequestConstProvider with ChangeNotifier {
     required DateTime constStartedAt,
     required DateTime constEndedAt,
     required bool constAtPending,
-    required PlatformFile? pickedProcessFile,
     required String constContent,
     required bool noise,
     required String noiseMeasures,
@@ -49,6 +48,7 @@ class RequestConstProvider with ChangeNotifier {
     required String dustMeasures,
     required bool fire,
     required String fireMeasures,
+    required List<PlatformFile> pickedAttachedFiles,
   }) async {
     String? error;
     if (companyName == '') return '店舗名は必須入力です';
@@ -58,19 +58,21 @@ class RequestConstProvider with ChangeNotifier {
     try {
       await FirebaseAuth.instance.signInAnonymously().then((value) async {
         String id = _constService.id();
-        String processFile = '';
-        String processFileExt = '';
-        if (pickedProcessFile != null) {
-          String ext = p.extension(pickedProcessFile.name);
-          storage.UploadTask uploadTask;
-          storage.Reference ref = storage.FirebaseStorage.instance
-              .ref()
-              .child('requestConst')
-              .child('/$id$ext');
-          uploadTask = ref.putData(pickedProcessFile.bytes!);
-          await uploadTask.whenComplete(() => null);
-          processFile = await ref.getDownloadURL();
-          processFileExt = ext;
+        List<String> attachedFiles = [];
+        if (pickedAttachedFiles.isNotEmpty) {
+          int i = 0;
+          for (final file in pickedAttachedFiles) {
+            String ext = p.extension(file.name);
+            storage.UploadTask uploadTask;
+            storage.Reference ref = storage.FirebaseStorage.instance
+                .ref()
+                .child('requestInterview')
+                .child('/${id}_$i$ext');
+            uploadTask = ref.putData(file.bytes!);
+            await uploadTask.whenComplete(() => null);
+            String url = await ref.getDownloadURL();
+            attachedFiles.add(url);
+          }
         }
         _constService.create({
           'id': id,
@@ -84,8 +86,6 @@ class RequestConstProvider with ChangeNotifier {
           'constStartedAt': constStartedAt,
           'constEndedAt': constEndedAt,
           'constAtPending': constAtPending,
-          'processFile': processFile,
-          'processFileExt': processFileExt,
           'constContent': constContent,
           'noise': noise,
           'noiseMeasures': noiseMeasures,
@@ -93,6 +93,7 @@ class RequestConstProvider with ChangeNotifier {
           'dustMeasures': dustMeasures,
           'fire': fire,
           'fireMeasures': fireMeasures,
+          'attachedFiles': attachedFiles,
           'approval': 0,
           'approvedAt': DateTime.now(),
           'approvalUsers': [],
