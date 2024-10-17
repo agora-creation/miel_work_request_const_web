@@ -128,7 +128,8 @@ class _Step1ScreenState extends State<Step1Screen> {
                     '※このメールアドレス宛に、返答させていただきます',
                     style: TextStyle(
                       color: kRedColor,
-                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'SourceHanSansJP-Bold',
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -161,6 +162,14 @@ class _Step1ScreenState extends State<Step1Screen> {
                       textInputType: TextInputType.text,
                       maxLines: 1,
                       hintText: '例）株式会社ABC',
+                    ),
+                  ),
+                  const Text(
+                    '※施工の管理ができる業者',
+                    style: TextStyle(
+                      color: kRedColor,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'SourceHanSansJP-Bold',
                     ),
                   ),
                   const SizedBox(height: 8),

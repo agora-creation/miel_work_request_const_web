@@ -2,8 +2,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as storage;
 import 'package:flutter/material.dart';
+import 'package:miel_work_request_const_web/common/functions.dart';
 import 'package:miel_work_request_const_web/models/user.dart';
 import 'package:miel_work_request_const_web/services/fm.dart';
+import 'package:miel_work_request_const_web/services/mail.dart';
 import 'package:miel_work_request_const_web/services/request_const.dart';
 import 'package:miel_work_request_const_web/services/user.dart';
 import 'package:path/path.dart' as p;
@@ -11,6 +13,7 @@ import 'package:path/path.dart' as p;
 class RequestConstProvider with ChangeNotifier {
   final RequestConstService _constService = RequestConstService();
   final UserService _userService = UserService();
+  final MailService _mailService = MailService();
   final FmService _fmService = FmService();
 
   Future<String?> check({
@@ -95,6 +98,58 @@ class RequestConstProvider with ChangeNotifier {
           'approvalUsers': [],
           'createdAt': DateTime.now(),
         });
+      });
+      String constAtText = '';
+      if (constAtPending) {
+        constAtText = '未定';
+      } else {
+        constAtText =
+            '${dateText('yyyy/MM/dd HH:mm', constStartedAt)}〜${dateText('yyyy/MM/dd HH:mm', constEndedAt)}';
+      }
+      String noiseText = '';
+      if (noise) {
+        noiseText = '有($noiseMeasures)';
+      }
+      String dustText = '';
+      if (dust) {
+        dustText = '有($dustMeasures)';
+      }
+      String fireText = '';
+      if (fire) {
+        fireText = '有($fireMeasures)';
+      }
+      String message = '''
+★★★このメールは自動返信メールです★★★
+
+店舗工事作業申請が完了いたしました。
+以下申請内容を確認し、ご返信させていただきますので今暫くお待ちください。
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+■申請者情報
+【店舗名】$companyName
+【店舗責任者名】$companyUserName
+【店舗責任者メールアドレス】$companyUserEmail
+【店舗責任者電話番号】$companyUserTel
+
+■工事施工情報
+【工事施工会社名】$constName
+【工事施工代表者名】$constUserName
+【工事施工代表者電話番号】$constUserTel
+【施工予定日時】$constAtText
+【施工内容】
+$constContent
+【騒音】$noiseText
+【粉塵】$dustText
+【火気の使用】$fireText
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      ''';
+      _mailService.create({
+        'id': _mailService.id(),
+        'to': companyUserEmail,
+        'subject': '【自動送信】店舗工事作業申請完了のお知らせ',
+        'message': message,
+        'createdAt': DateTime.now(),
+        'expirationAt': DateTime.now().add(const Duration(hours: 1)),
       });
       //通知
       List<UserModel> sendUsers = [];
