@@ -97,7 +97,7 @@ class _Step2ScreenState extends State<Step2Screen> {
                   const SizedBox(height: 8),
                   FormLabel(
                     '店舗名',
-                    child: FormValue(widget.constName),
+                    child: FormValue(widget.companyName),
                   ),
                   const SizedBox(height: 8),
                   FormLabel(
@@ -224,7 +224,7 @@ class _Step2ScreenState extends State<Step2Screen> {
                     backgroundColor: kBlueColor,
                     onPressed: () async {
                       String? error = await constProvider.create(
-                        companyName: widget.constName,
+                        companyName: widget.companyName,
                         companyUserName: widget.companyUserName,
                         companyUserEmail: widget.companyUserEmail,
                         companyUserTel: widget.companyUserTel,
