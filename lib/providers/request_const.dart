@@ -99,27 +99,32 @@ class RequestConstProvider with ChangeNotifier {
           'approvalUsers': [],
           'createdAt': DateTime.now(),
         });
-      });
-      String constAtText = '';
-      if (constAtPending) {
-        constAtText = '未定';
-      } else {
-        constAtText =
-            '${dateText('yyyy/MM/dd HH:mm', constStartedAt)}〜${dateText('yyyy/MM/dd HH:mm', constEndedAt)}';
-      }
-      String noiseText = '';
-      if (noise) {
-        noiseText = '有($noiseMeasures)';
-      }
-      String dustText = '';
-      if (dust) {
-        dustText = '有($dustMeasures)';
-      }
-      String fireText = '';
-      if (fire) {
-        fireText = '有($fireMeasures)';
-      }
-      String message = '''
+        String constAtText = '';
+        if (constAtPending) {
+          constAtText = '未定';
+        } else {
+          constAtText =
+              '${dateText('yyyy/MM/dd HH:mm', constStartedAt)}〜${dateText('yyyy/MM/dd HH:mm', constEndedAt)}';
+        }
+        String noiseText = '';
+        if (noise) {
+          noiseText = '有($noiseMeasures)';
+        }
+        String dustText = '';
+        if (dust) {
+          dustText = '有($dustMeasures)';
+        }
+        String fireText = '';
+        if (fire) {
+          fireText = '有($fireMeasures)';
+        }
+        String attachedFilesText = '';
+        if (attachedFiles.isNotEmpty) {
+          for (final file in attachedFiles) {
+            attachedFilesText += '$file\n';
+          }
+        }
+        String message = '''
 ★★★このメールは自動返信メールです★★★
 
 店舗工事作業申請が完了いたしました。
@@ -142,15 +147,19 @@ $constContent
 【粉塵】$dustText
 【火気の使用】$fireText
 
+【添付ファイル】
+$attachedFilesText
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       ''';
-      _mailService.create({
-        'id': _mailService.id(),
-        'to': companyUserEmail,
-        'subject': '【自動送信】店舗工事作業申請完了のお知らせ',
-        'message': message,
-        'createdAt': DateTime.now(),
-        'expirationAt': DateTime.now().add(const Duration(hours: 1)),
+        _mailService.create({
+          'id': _mailService.id(),
+          'to': companyUserEmail,
+          'subject': '【自動送信】店舗工事作業申請完了のお知らせ',
+          'message': message,
+          'createdAt': DateTime.now(),
+          'expirationAt': DateTime.now().add(const Duration(hours: 1)),
+        });
       });
       //通知
       List<UserModel> sendUsers = [];
