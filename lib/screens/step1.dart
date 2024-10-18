@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:miel_work_request_const_web/common/custom_date_time_picker.dart';
 import 'package:miel_work_request_const_web/common/functions.dart';
 import 'package:miel_work_request_const_web/common/style.dart';
+import 'package:miel_work_request_const_web/models/request_const.dart';
 import 'package:miel_work_request_const_web/providers/request_const.dart';
 import 'package:miel_work_request_const_web/screens/step2.dart';
+import 'package:miel_work_request_const_web/services/request_const.dart';
 import 'package:miel_work_request_const_web/widgets/attached_file_list.dart';
 import 'package:miel_work_request_const_web/widgets/custom_button.dart';
 import 'package:miel_work_request_const_web/widgets/custom_checkbox.dart';
@@ -25,6 +27,7 @@ class Step1Screen extends StatefulWidget {
 }
 
 class _Step1ScreenState extends State<Step1Screen> {
+  RequestConstService constService = RequestConstService();
   TextEditingController companyName = TextEditingController();
   TextEditingController companyUserName = TextEditingController();
   TextEditingController companyUserEmail = TextEditingController();
@@ -44,6 +47,31 @@ class _Step1ScreenState extends State<Step1Screen> {
   TextEditingController fireMeasures = TextEditingController();
   List<PlatformFile> pickedAttachedFiles = [];
 
+  void _getPrm() async {
+    String? id = Uri.base.queryParameters['id'];
+    if (id == null) return;
+    RequestConstModel? requestConst = await constService.selectData(id);
+    if (requestConst == null) return;
+    companyName.text = requestConst.companyName;
+    companyUserName.text = requestConst.companyUserName;
+    companyUserEmail.text = requestConst.companyUserEmail;
+    companyUserTel.text = requestConst.companyUserTel;
+    constName.text = requestConst.constName;
+    constUserName.text = requestConst.constUserName;
+    constUserTel.text = requestConst.constUserTel;
+    constStartedAt = requestConst.constStartedAt;
+    constEndedAt = requestConst.constEndedAt;
+    constAtPending = requestConst.constAtPending;
+    constContent.text = requestConst.constContent;
+    noise = requestConst.noise;
+    noiseMeasures.text = requestConst.noiseMeasures;
+    dust = requestConst.dust;
+    dustMeasures.text = requestConst.dustMeasures;
+    fire = requestConst.fire;
+    fireMeasures.text = requestConst.fireMeasures;
+    setState(() {});
+  }
+
   @override
   void initState() {
     constStartedAt = DateTime(
@@ -57,6 +85,7 @@ class _Step1ScreenState extends State<Step1Screen> {
     constEndedAt = constStartedAt.add(
       const Duration(hours: 2),
     );
+    _getPrm();
     super.initState();
   }
 
