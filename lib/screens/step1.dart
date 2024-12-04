@@ -215,6 +215,7 @@ class _Step1ScreenState extends State<Step1Screen> {
                   const SizedBox(height: 8),
                   FormLabel(
                     '工事施工代表者電話番号',
+                    required: true,
                     child: CustomTextField(
                       controller: constUserTel,
                       textInputType: TextInputType.text,
@@ -408,6 +409,7 @@ class _Step1ScreenState extends State<Step1Screen> {
                         companyUserName: companyUserName.text,
                         companyUserEmail: companyUserEmail.text,
                         companyUserTel: companyUserTel.text,
+                        constUserTel: constUserTel.text,
                       );
                       if (error != null) {
                         if (!mounted) return;

@@ -21,12 +21,14 @@ class RequestConstProvider with ChangeNotifier {
     required String companyUserName,
     required String companyUserEmail,
     required String companyUserTel,
+    required String constUserTel,
   }) async {
     String? error;
     if (companyName == '') return '店舗名は必須入力です';
     if (companyUserName == '') return '店舗責任者名は必須入力です';
     if (companyUserEmail == '') return '店舗責任者メールアドレスは必須入力です';
     if (companyUserTel == '') return '店舗責任者電話番号は必須入力です';
+    if (constUserTel == '') return '工事施工代表者電話番号は必須入力です';
     return error;
   }
 
@@ -55,6 +57,7 @@ class RequestConstProvider with ChangeNotifier {
     if (companyUserName == '') return '店舗責任者名は必須入力です';
     if (companyUserEmail == '') return '店舗責任者メールアドレスは必須入力です';
     if (companyUserTel == '') return '店舗責任者電話番号は必須入力です';
+    if (constUserTel == '') return '工事施工代表者電話番号は必須入力です';
     try {
       await FirebaseAuth.instance.signInAnonymously().then((value) async {
         String id = _constService.id();
