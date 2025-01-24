@@ -69,7 +69,7 @@ class RequestConstProvider with ChangeNotifier {
             storage.UploadTask uploadTask;
             storage.Reference ref = storage.FirebaseStorage.instance
                 .ref()
-                .child('requestInterview')
+                .child('requestConst')
                 .child('/${id}_$i$ext');
             uploadTask = ref.putData(file.bytes!);
             await uploadTask.whenComplete(() => null);
