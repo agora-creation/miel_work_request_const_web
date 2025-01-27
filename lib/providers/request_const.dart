@@ -22,6 +22,8 @@ class RequestConstProvider with ChangeNotifier {
     required String companyUserEmail,
     required String companyUserTel,
     required String constUserTel,
+    required String chargeUserName,
+    required String chargeUserTel,
   }) async {
     String? error;
     if (companyName == '') return '店舗名は必須入力です';
@@ -29,6 +31,8 @@ class RequestConstProvider with ChangeNotifier {
     if (companyUserEmail == '') return '店舗責任者メールアドレスは必須入力です';
     if (companyUserTel == '') return '店舗責任者電話番号は必須入力です';
     if (constUserTel == '') return '工事施工代表者電話番号は必須入力です';
+    if (chargeUserName == '') return '当日担当者名は必須入力です';
+    if (chargeUserTel == '') return '当日担当者電話番号は必須入力です';
     return error;
   }
 
@@ -40,6 +44,8 @@ class RequestConstProvider with ChangeNotifier {
     required String constName,
     required String constUserName,
     required String constUserTel,
+    required String chargeUserName,
+    required String chargeUserTel,
     required DateTime constStartedAt,
     required DateTime constEndedAt,
     required bool constAtPending,
@@ -86,6 +92,8 @@ class RequestConstProvider with ChangeNotifier {
           'constName': constName,
           'constUserName': constUserName,
           'constUserTel': constUserTel,
+          'chargeUserName': chargeUserName,
+          'chargeUserTel': chargeUserTel,
           'constStartedAt': constStartedAt,
           'constEndedAt': constEndedAt,
           'constAtPending': constAtPending,
@@ -146,6 +154,8 @@ class RequestConstProvider with ChangeNotifier {
 【工事施工会社名】$constName
 【工事施工代表者名】$constUserName
 【工事施工代表者電話番号】$constUserTel
+【当日担当者名】$chargeUserName
+【当日担当者電話番号】$chargeUserTel
 【施工予定日時】$constAtText
 【施工内容】
 $constContent

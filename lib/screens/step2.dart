@@ -23,6 +23,8 @@ class Step2Screen extends StatefulWidget {
   final String constName;
   final String constUserName;
   final String constUserTel;
+  final String chargeUserName;
+  final String chargeUserTel;
   final DateTime constStartedAt;
   final DateTime constEndedAt;
   final bool constAtPending;
@@ -43,6 +45,8 @@ class Step2Screen extends StatefulWidget {
     required this.constName,
     required this.constUserName,
     required this.constUserTel,
+    required this.chargeUserName,
+    required this.chargeUserTel,
     required this.constStartedAt,
     required this.constEndedAt,
     required this.constAtPending,
@@ -142,6 +146,16 @@ class _Step2ScreenState extends State<Step2Screen> {
                   ),
                   const SizedBox(height: 8),
                   FormLabel(
+                    '当日担当者名',
+                    child: FormValue(widget.chargeUserName),
+                  ),
+                  const SizedBox(height: 8),
+                  FormLabel(
+                    '当日担当者電話番号',
+                    child: FormValue(widget.chargeUserTel),
+                  ),
+                  const SizedBox(height: 8),
+                  FormLabel(
                     '施工予定日時',
                     child: FormValue(
                       widget.constAtPending
@@ -231,6 +245,8 @@ class _Step2ScreenState extends State<Step2Screen> {
                         constName: widget.constName,
                         constUserName: widget.constUserName,
                         constUserTel: widget.constUserTel,
+                        chargeUserName: widget.chargeUserName,
+                        chargeUserTel: widget.chargeUserTel,
                         constStartedAt: widget.constStartedAt,
                         constEndedAt: widget.constEndedAt,
                         constAtPending: widget.constAtPending,

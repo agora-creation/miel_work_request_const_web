@@ -35,6 +35,8 @@ class _Step1ScreenState extends State<Step1Screen> {
   TextEditingController constName = TextEditingController();
   TextEditingController constUserName = TextEditingController();
   TextEditingController constUserTel = TextEditingController();
+  TextEditingController chargeUserName = TextEditingController();
+  TextEditingController chargeUserTel = TextEditingController();
   DateTime constStartedAt = DateTime.now();
   DateTime constEndedAt = DateTime.now();
   bool constAtPending = false;
@@ -218,6 +220,28 @@ class _Step1ScreenState extends State<Step1Screen> {
                     required: true,
                     child: CustomTextField(
                       controller: constUserTel,
+                      textInputType: TextInputType.text,
+                      maxLines: 1,
+                      hintText: '例）090-0000-0000',
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  FormLabel(
+                    '当日担当者名',
+                    required: true,
+                    child: CustomTextField(
+                      controller: chargeUserName,
+                      textInputType: TextInputType.text,
+                      maxLines: 1,
+                      hintText: '例）山田三郎',
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  FormLabel(
+                    '当日担当者電話番号',
+                    required: true,
+                    child: CustomTextField(
+                      controller: chargeUserTel,
                       textInputType: TextInputType.text,
                       maxLines: 1,
                       hintText: '例）090-0000-0000',
@@ -410,6 +434,8 @@ class _Step1ScreenState extends State<Step1Screen> {
                         companyUserEmail: companyUserEmail.text,
                         companyUserTel: companyUserTel.text,
                         constUserTel: constUserTel.text,
+                        chargeUserName: chargeUserName.text,
+                        chargeUserTel: chargeUserTel.text,
                       );
                       if (error != null) {
                         if (!mounted) return;
@@ -429,6 +455,8 @@ class _Step1ScreenState extends State<Step1Screen> {
                             constName: constName.text,
                             constUserName: constUserName.text,
                             constUserTel: constUserTel.text,
+                            chargeUserName: chargeUserName.text,
+                            chargeUserTel: chargeUserTel.text,
                             constStartedAt: constStartedAt,
                             constEndedAt: constEndedAt,
                             constAtPending: constAtPending,
